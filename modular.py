@@ -37,25 +37,23 @@ class ExpressTrain:
         
         Example subclassing:
 
-        class ExampleExpressTrain(ExpressTrain):
-            def __init__ (self, **kwargs):
-                super(ExampleExpressTrain, self).__init__()
+        class CustomExpressTrain(ExpressTrain):
+            def __init__(self, **kwargs):
+                super(CustomExpressTrain, self).__init__()
                 self.initialize_all(kwargs)
-                self.value=84
 
-            def on_epoch_start(self):
-                self.value+=1
-                print((f"Due to the inevitability +=1, this is now {self.value}"))
+            def on_train_epoch_start(self):
+                print(f"Pre-train message: You're doing great: epoch {self.epoch}")
 
-        trainer=ExampleExpressTrain(train_loader=train_loader, valid_loader=valid_loader, test_loader=test_loader,
-                                model=model, device=device, num_classes=num_classes, bce_use=bce_use, 
-                                learning_rate=learning_rate, optimizer=optimizer, metric_used=metric_used, \
-                                loss_fn=None,
+        trainer=CustomExpressTrain(train_loader=train_loader, valid_loader=valid_loader, test_loader=test_loader,
+                                model=model, num_classes=num_classes,  
+                                learning_rate=learning_rate, optimizer=optimizer, metric_used=metric_used, 
+                                bce_use=bce_use, loss_fn=None,
                                 class_weights=class_weights,
-                                scheduler=scheduler, lr_adjuster_on_val=lr_adjuster, lr_div_factor=lr_div_factor, \
-                                survival=survival, one_cycle_epochs=one_cycle_epochs, \
-                                metric_from_whole=metric_from_whole, \
-                                backward_every=backward_every, fp16=fp16,
+                                scheduler=scheduler, lr_adjuster_on_val=lr_adjuster, lr_div_factor=lr_div_factor, 
+                                survival=survival, one_cycle_epochs=one_cycle_epochs, 
+                                metric_from_whole=metric_from_whole, 
+                                backward_every=backward_every, fp16=fp16, device=device, 
                                 save_every=save_every,
                                 path_performance=path_performance,
                                 path_performance_and_model=path_performance_and_model)
@@ -69,6 +67,7 @@ class ExpressTrain:
 
     def initialize_all(self, kwargs):
         self.bce_use=False # whether we should use BinaryCrossEntropyLoss
+        self.device=torch.device('cpu') # pytorch device to use for analysis
         self.loss_fn=None   # if not None, specify desired loss function
         self.class_weights=None # class_weights according to pytorch convention
         self.scheduler=None # scheduler according to pytorch convention
@@ -79,7 +78,7 @@ class ExpressTrain:
         self.metric_from_whole=True # should metric be computed by single batch of whole epoch
         self.backward_every=1 # backward is performed every specified number of epochs
         self.fp16=False # half precision (nvidia amp) training: saves memory
-        self.save_every=None # saing loss, metric and model happens every specified epochs
+        self.save_every=5 # saing loss, metric and model happens every specified epochs
         self.path_performance=None # path where loss and metrics are saved
         self.path_performance_and_model=None # path where loss, metrics, and model params are saved
         for key in kwargs: #all other parameyters are converted into attributes
