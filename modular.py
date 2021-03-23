@@ -311,7 +311,7 @@ class ExpressTrain:
         on_one_epoch,
         on_one_train_epoch,
         on_one_valid_epoch,
-        one_one_train_epoch,
+        one_one_test_epoch,
         on_train_epoch_start, on_train_epoch_end
         on_valid_epoch_start, on_valid_epoch_end
         on_test_epoch_start, on test_epoch_end'''
