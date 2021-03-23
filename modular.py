@@ -350,7 +350,7 @@ class ExpressTrain:
             self.val_metric_list.append(metric_epoch)
             self.on_valid_epoch_end()
             
-            print(f"Epoch {epoch+1}/{epochs}, AUC_train: {self.train_metric_list[-1]:.2f}, AUC_valid: {self.val_metric_list[-1]:.2f}")
+            print(f"Epoch {epoch+1}/{epochs}, {self.metric_used.__name__}_train: {self.train_metric_list[-1]:.2f}, {self.metric_used.__name__}_valid: {self.val_metric_list[-1]:.2f}")
             
             if self.save_every is not None:
 
@@ -380,7 +380,7 @@ class ExpressTrain:
             self.test_metric_list.append(metric_epoch)
             self.on_test_end()
 
-            print(f"AUC_test: {self.test_metric_list[-1]:.2f}")
+            print(f"{self.metric_used.__name__}_test: {self.test_metric_list[-1]:.2f}")
 
     def on_batch_start(self):
         pass
