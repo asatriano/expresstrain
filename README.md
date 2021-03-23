@@ -1,7 +1,7 @@
 # Express Train
 Pytorch training, testing and validation loops, half precision, and gradient accumulation. Made Easy.  
 
-![alt text](https://github.com/as-deeplearning/expresstrain/blob/main/images/express_train_logo_20210322.png)
+![alt text](https://github.com/as-deeplearning/expresstrain/blob/main/images/express_train_logo.png)
 
 More documentation to come soon.
 
