@@ -1,6 +1,3 @@
-# Refactoring of training loop
-# (support functions for training loop)
-
 # %%
 import torch
 import torchvision
