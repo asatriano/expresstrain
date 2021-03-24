@@ -34,9 +34,9 @@ class ExpressTrain:
         
         Example subclassing:
 
-        from expresstrain.model import ExpressTrain
+        import expresstrain as et
 
-        class CustomExpressTrain(ExpressTrain):
+        class CustomExpressTrain(et.ExpressTrain):
             def __init__(self, **kwargs):
                 super(CustomExpressTrain, self).__init__()
                 self.initialize_all(kwargs)
