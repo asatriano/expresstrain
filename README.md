@@ -8,13 +8,13 @@ More documentation to come soon.
 For now, first import:
 
 ```Python3
-from expresstrain.model import ExpressTrain
+import expresstrain as et
 ```
 
 Then subclass and use as follows:
 
 ```Python3
-class CustomExpressTrain(ExpressTrain):
+class CustomExpressTrain(et.ExpressTrain):
     def __init__(self, **kwargs):
         super(CustomExpressTrain, self).__init__()
         self.initialize_all(kwargs)
