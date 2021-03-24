@@ -37,6 +37,8 @@ class ExpressTrain:
         
         Example subclassing:
 
+        from expresstrain.modular import ExpressTrain
+
         class CustomExpressTrain(ExpressTrain):
             def __init__(self, **kwargs):
                 super(CustomExpressTrain, self).__init__()
@@ -59,6 +61,41 @@ class ExpressTrain:
                                 path_performance_and_model=path_performance_and_model)
 
         trainer.fit(epochs=epochs)
+
+        Args:
+
+        train_loader (Dataloader): training dataloader
+        valid_loader (Dataloader): validation data loader
+        test_loader (Dataloader): test dataloader
+        model (subclassed from torch.nn.Module): model, returning logits
+        num_classes (int): number of classes (2 or more)
+        learning_rate (float): learning_rate
+        optimizer (torch optimizer): optimizer
+        metric_used (callabe): metric_used
+
+        Optional Args:
+        
+        bce_use (bool): whether Binary Cross Entropy Loss should be used (default: False)
+        loss_fn (callable): non-default loss function (defaults are Binary Cross Entropy or CrossEntropy)
+                            (default: None)
+        class_weights=class_weights (default: None),
+        scheduler (torch scheduler): scheduler (default: None)
+        lr_adjuster_on_val (torch scheduler): scheduler acting on validation metric (default: None)
+        lr_div_factor (float): div_factor for torch.optim.lr_scheduler.OneCycleLR (default: None)
+        survival (bool): indicates if this is a survival problem (default: False)
+        one_cycle_epochs (int): new onecycle begins every one_cycle_epochs epochs (default: None) 
+        metric_from_whole (bool): indicates whether metric is obtained from average over batches
+                                    of a single epoch, or from predictions throughout the epoch
+                                    (default: True) 
+        backward_every (int): backward pass is performed every backward_every batches (gradient accumulation)
+                                (default: 1)
+        fp16 (bool): indicates usage of Automatic Mixed PRecision (default: False)
+        device (torch.device): device for analysis (default: torch.device('cpu'))
+        save_every (int): progress is saved every save_every epochs (default: 5)
+        path_performance (str): loss and metrics are saved in path_performance
+                                (default: None)
+        path_performance_and_model (str): loss, metrics, and model parameters are saved inpath_performance_and_model
+                                        (default: None)
 
     '''
 
