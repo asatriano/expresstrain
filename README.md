@@ -8,7 +8,7 @@ More documentation to come soon.
 For now, first import:
 
 ```Python3
-from expresstrain.modular import ExpressTrain
+from expresstrain.model import ExpressTrain
 ```
 
 Then subclass and use as follows:

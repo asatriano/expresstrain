@@ -37,7 +37,7 @@ class ExpressTrain:
         
         Example subclassing:
 
-        from expresstrain.modular import ExpressTrain
+        from expresstrain.model import ExpressTrain
 
         class CustomExpressTrain(ExpressTrain):
             def __init__(self, **kwargs):
