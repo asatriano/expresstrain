@@ -238,7 +238,9 @@ class ExpressTrain:
                                                     epochs=self.one_cycle_epochs if self.backward_every==1 else (self.one_cycle_epochs+1)*self.backward_every_n_epochs*2,
                                                     verbose=False
                                                     )
+        self.batches_total=len(data_loader)
         for batch_idx, (data, target) in enumerate(data_loader):
+            self.batch=batch_idx
             self.on_batch_start()
             data, target=self.prepare_data_label_for_forward(data=data,
                                                         target=target
