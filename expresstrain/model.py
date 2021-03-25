@@ -267,9 +267,7 @@ class ExpressTrain:
         else:
             metric_epoch=100*sum(metric_list)/len(metric_list)
         loss_epoch=sum(loss_list)/len(loss_list)
-        if train==False and inference_on_holdout==False:
-            if self.lr_adjuster_on_val is not None:
-                self.lr_adjuster_on_val.step(metric_epoch)
+        
         return loss_epoch, metric_epoch, pred_list[1:], target_list[1:]
 
     def save_progress(self, epoch,
@@ -334,6 +332,9 @@ class ExpressTrain:
                                                     )
         return loss_epoch, metric_epoch, pred_list, target_list
 
+    def lr_adjust_on_val(self):
+        self.lr_adjuster_on_val.step(self.val_metric_list[-1])
+
     def fit(self, epochs):
         '''Runs training and validation loop for epochs, then tests, if test_loader
         is available.
@@ -380,6 +381,9 @@ class ExpressTrain:
             self.val_loss_list.append(loss_epoch)
             self.val_metric_list.append(metric_epoch)
             self.on_valid_epoch_end()
+
+            if (self.lr_adjuster_on_val is not None) and (self.valid_loader is not None):
+                self.lr_adjust_on_val()
             
             print(f"Epoch {epoch+1}/{epochs}, {self.metric_used.__name__}_train: {self.train_metric_list[-1]:.2f}, {self.metric_used.__name__}_valid: {self.val_metric_list[-1]:.2f}")
             
