@@ -4,6 +4,8 @@
 # Adapted from:
 # https://github.com/pytorch/examples/blob/master/mnist/main.py
 
+# Please clone expresstrain in the folder containing this file :)
+
 from __future__ import print_function
 import argparse
 import torch
