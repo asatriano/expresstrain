@@ -1,10 +1,6 @@
 # %%
-
-
 # Adapted from:
 # https://github.com/pytorch/examples/blob/master/mnist/main.py
-
-# Please clone expresstrain in the folder containing this file :)
 
 from __future__ import print_function
 import argparse
@@ -15,9 +11,12 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
 
-# Import ExpressTrain:
-import expresstrain as et
+import os
 
+# Clone ExpressTrain :)
+os.system("git clone https://github.com/asatriano/expresstrain")
+# Import ExpressTrain
+import expresstrain as et
 
 # %%
 # Define your model:
@@ -97,9 +96,9 @@ def main():
         ])
 
     # Import your datasets
-    dataset1 = datasets.MNIST('../data', train=True, download=True,
+    dataset1 = datasets.MNIST('./data', train=True, download=True,
                         transform=transform)
-    dataset2 = datasets.MNIST('../data', train=False,
+    dataset2 = datasets.MNIST('./data', train=False,
                         transform=transform)
 
     # Define Dataloaders:
