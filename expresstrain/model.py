@@ -392,8 +392,8 @@ class ExpressTrain:
             
             print(f"Epoch {epoch+1}/{epochs}, {self.metric_used.__name__}_train: {self.train_metric_list[-1]:.2f}")
             if self.valid_loader is not None:
-                
-                printf(f"Epoch {epoch+1}{epochs}, {self.metric_used.__name__}_valid: {self.val_metric_list[-1]:.2f}
+
+                printf(f"Epoch {epoch+1}{epochs}, {self.metric_used.__name__}_valid: {self.val_metric_list[-1]:.2f}")
             
             if self.save_every is not None:
 
