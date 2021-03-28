@@ -13,9 +13,9 @@ from torch.optim.lr_scheduler import StepLR
 
 import os
 
-# Clone ExpressTrain :)
+# Clone ExpressTrain
 os.system("git clone https://github.com/asatriano/expresstrain")
-# Import ExpressTrain
+# Import ExpressTrain :)
 import expresstrain as et
 
 # %%
