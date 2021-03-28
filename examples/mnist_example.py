@@ -60,7 +60,7 @@ PATH_PERFORMANCE_AND_MODEL='performance_and_model'
 
 def main():
     # Trainign hyperparameters
-    parser=argparse.ArgumentParser(description='PyTorch FashionMNIST Example')
+    parser=argparse.ArgumentParser(description='PyTorch MNIST Example')
     parser.add_argument('--random-seed', type=int, default=42, metavar='RS',
                         help='input random seed integer (default: 42)')
     parser.add_argument('--batch-size', type=int, default=32, metavar='BS',
