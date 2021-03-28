@@ -97,6 +97,8 @@ class ExpressTrain:
         self.initialize_all(kwargs)
 
     def initialize_all(self, kwargs):
+        self.valid_loader=None # validation_loader to use for internal validation
+        self.test_loader=None # test_loader to assess performance at inference on holdout
         self.bce_use=False # whether we should use BinaryCrossEntropyLoss
         self.device=torch.device('cpu') # pytorch device to use for analysis
         self.loss_fn=None   # if not None, specify desired loss function
@@ -375,19 +377,22 @@ class ExpressTrain:
             self.train_metric_list.append(metric_epoch)
             self.on_train_epoch_end()
 
-            self.on_valid_epoch_start()
-            loss_epoch, metric_epoch, _, _ = self.on_one_valid_epoch(
-                                                    epoch=epoch,
-                                                    data_loader=self.valid_loader,
-                                                    )
-            self.val_loss_list.append(loss_epoch)
-            self.val_metric_list.append(metric_epoch)
-            self.on_valid_epoch_end()
+            if self.valid_loader is not None:
+                self.on_valid_epoch_start()
+                loss_epoch, metric_epoch, _, _ = self.on_one_valid_epoch(
+                                                        epoch=epoch,
+                                                        data_loader=self.valid_loader,
+                                                        )
+                self.val_loss_list.append(loss_epoch)
+                self.val_metric_list.append(metric_epoch)
+                self.on_valid_epoch_end()
 
-            if (self.lr_adjuster_on_val is not None) and (self.valid_loader is not None):
-                self.lr_adjust_on_val()
+                if (self.lr_adjuster_on_val is not None) and (self.valid_loader is not None):
+                    self.lr_adjust_on_val()
             
-            print(f"Epoch {epoch+1}/{epochs}, {self.metric_used.__name__}_train: {self.train_metric_list[-1]:.2f}, {self.metric_used.__name__}_valid: {self.val_metric_list[-1]:.2f}")
+            print(f"Epoch {epoch+1}/{epochs}, {self.metric_used.__name__}_train: {self.train_metric_list[-1]:.2f}")
+            if self.valid_loader is not None:
+                printf(f"Epoch {epoch+1}{epochs}, {self.metric_used.__name__}_valid: {self.val_metric_list[-1]:.2f}
             
             if self.save_every is not None:
 
