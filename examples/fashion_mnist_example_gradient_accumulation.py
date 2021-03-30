@@ -123,7 +123,7 @@ def main():
             super(CustomExpressTrain, self).__init__()
             self.initialize_all(kwargs)
 
-        def on_train_epoch_start(self):
+        def on_train_epoch_begin(self):
             print(f"Message before epoch {self.epoch+1} - Today is a great day :)")
     
     # Instance your Custom Express Train trainer
