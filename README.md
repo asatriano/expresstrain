@@ -41,3 +41,6 @@ trainer.fit(epochs=epochs)
 
 
 That's it :)
+
+Open the Fashion MNIST example Example in Colab!
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/asatriano/expresstrain/blob/main/examples/expresstrain_fashion_mnist_example.ipynb)
