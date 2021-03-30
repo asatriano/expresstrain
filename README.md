@@ -3,6 +3,8 @@ Pytorch training, testing and validation loops, half precision, and gradient acc
 
 ![alt text](https://github.com/as-deeplearning/expresstrain/blob/main/images/express_train_logo.png)
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/asatriano/expresstrain/blob/main/examples/expresstrain_fashion_mnist_example.ipynb)
+
 More documentation to come soon.
 
 For now, first import:
@@ -52,3 +54,20 @@ That's it! 🚂
 Open the Fashion MNIST example in Colab!
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/asatriano/expresstrain/blob/main/examples/expresstrain_fashion_mnist_example.ipynb)
+
+Customize your model using any of the following hooks (more to come!):
+
+```Python3
+on_batch_start(self)        
+on_batch_end(self)      
+on_epoch_start(self)
+on_epoch_end(self)
+on_train_epoch_start(self)        
+on_train_epoch_end(self)        
+on_valid_epoch_start(self)        
+on_valid_epoch_end(self)        
+on_test_start(self)       
+on_test_end(self)    
+```
+
+or changing any of the default attributes :)
