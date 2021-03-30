@@ -48,7 +48,7 @@ class Net(nn.Module):
 
 # %%
 def main():
-    # Trainign hyperparameters
+    # Training hyperparameters
     parser=argparse.ArgumentParser(description='PyTorch FashionMNIST Example')
     parser.add_argument('--random-seed', type=int, default=42, metavar='RS',
                         help='input random seed integer (default: 42)')
