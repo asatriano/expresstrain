@@ -70,4 +70,32 @@ on_test_start(self)
 on_test_end(self)    
 ```
 
-or changing any of the default attributes :)
+or changing any of the default attributes when you instance your custom trainer:
+
+```Python3
+self.valid_loader=None # validation_loader to use for internal validation
+self.test_loader=None # test_loader to assess performance at inference on holdout
+
+self.bce_use=False # whether we should use BinaryCrossEntropyLoss
+
+self.device=torch.device('cpu') # pytorch device to use for analysis
+
+self.loss_fn=None   # if not None, specify desired loss function
+self.class_weights=None # class_weights according to pytorch convention
+
+self.scheduler=None # scheduler according to pytorch convention
+self.lr_adjuster_on_val=None # pytorch scheduler depending on validation results
+self.lr_div_factor=None # if not None, this activates one_cycle traing and divides lr
+self.one_cycle_epochs=None # how many epochs each one-cycle trainign cycle should last
+
+self.metric_from_whole=True # should metric be computed by single batch of whole epoch
+
+self.backward_every=1 # backward is performed every specified number of epochs (for gradient accumulation)
+self.fp16=False # half precision (nvidia amp) training: saves memory (for Automatic Mixed Precision)
+
+self.save_every=5 # saing loss, metric and model happens every specified epochs
+
+self.path_performance=None # path where loss and metrics are saved
+self.path_performance_and_model=None # path where loss, metrics, and model params are saved
+```
+
