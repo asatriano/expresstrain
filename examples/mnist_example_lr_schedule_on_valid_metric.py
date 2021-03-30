@@ -79,6 +79,8 @@ def main():
 # %%
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device used: {device}")
+
+    torch.manual_seed(args.random_seed)
      
     # Define your transforms:
     transform=transforms.Compose([

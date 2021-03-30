@@ -14,6 +14,7 @@ from torch.optim.lr_scheduler import StepLR
 import os
 
 # Clone ExpressTrain
+os.system("rm -rf ./expresstrain")
 os.system("git clone https://github.com/asatriano/expresstrain")
 # Import ExpressTrain :)
 import expresstrain as et
@@ -76,6 +77,8 @@ def main():
 # %%
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device used: {device}")
+
+    torch.manual_seed(args.random_seed)
      
     # Define your transforms:
     transform=transforms.Compose([
