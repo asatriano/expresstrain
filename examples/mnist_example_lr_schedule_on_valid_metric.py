@@ -62,7 +62,7 @@ def main():
     parser.add_argument('--learning-rate', type=float, default=1e-2, metavar='LR',
                         help='input training learnign rate (default: 3e-4)')
     parser.add_argument('--step-size-lr-scheduler', type=int, default=2, metavar='SLRS',
-                        help='Learning rate step gamma (default: 2)')
+                        help='Learning rate step size (default: 2)')
     parser.add_argument('--gamma', type=float, default=1e-3, metavar='M',
                         help='Learning rate step gamma (default: 0.7)')
     parser.add_argument('--epochs', type=int, default=10, metavar='E',
