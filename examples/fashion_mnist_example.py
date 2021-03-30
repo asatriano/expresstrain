@@ -14,6 +14,7 @@ from torch.optim.lr_scheduler import StepLR
 import os
 
 # Clone ExpressTrain
+os.system("rm -rf ./expresstrain")
 os.system("git clone https://github.com/asatriano/expresstrain")
 # Import ExpressTrain :)
 import expresstrain as et
@@ -47,16 +48,6 @@ class Net(nn.Module):
     # custom loss function in ExpressTrainer)
 
 # %%
-# Set up some hyperparameters:
-RANDOM_SEED=42
-BATCH_SIZE=64
-BATCH_SIZE_MULTIPLIER=2
-NUM_WORKERS=0
-LEARNING_RATE=1.0
-EPOCHS=32
-PATH_PERFORMANCE='performance'
-PATH_PERFORMANCE_AND_MODEL='performance_and_model'
-
 def main():
     # Trainign hyperparameters
     parser=argparse.ArgumentParser(description='PyTorch FashionMNIST Example')
