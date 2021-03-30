@@ -41,7 +41,7 @@ class ExpressTrain:
                 super(CustomExpressTrain, self).__init__()
                 self.initialize_all(kwargs)
 
-            def on_train_epoch_start(self):
+            def on_train_epoch_begin(self):
                 print(f"Pre-train message: You're doing great: epoch {self.epoch}")
 
         trainer=CustomExpressTrain(train_loader=train_loader, valid_loader=valid_loader, test_loader=test_loader,
@@ -219,7 +219,7 @@ class ExpressTrain:
         '''Input: epoch, data_loader, train status, inference_on_holdout status
         Output: loss_epoch, metric_epoch, pred_list[1:], target_list[1:]
         Hooks available:
-        on_epoch_start, on_epoch_end,'''
+        on_epoch_begin, on_epoch_end,'''
         loss_list=[]
         metric_list=[]
         shape_log_list=[1,1] if self.bce_use==True else [1]
@@ -243,7 +243,7 @@ class ExpressTrain:
         self.batches_total=len(data_loader)
         for batch_idx, (data, target) in enumerate(data_loader):
             self.batch=batch_idx
-            self.on_batch_start()
+            self.on_batch_begin()
             data, target=self.prepare_data_label_for_forward(data=data,
                                                         target=target
                                                         )
@@ -347,9 +347,9 @@ class ExpressTrain:
         on_one_train_epoch,
         on_one_valid_epoch,
         one_one_test_epoch,
-        on_train_epoch_start, on_train_epoch_end
-        on_valid_epoch_start, on_valid_epoch_end
-        on_test_epoch_start, on test_epoch_end'''
+        on_train_epoch_begin, on_train_epoch_end
+        on_valid_epoch_begin, on_valid_epoch_end
+        on_test_epoch_begin, on test_epoch_end'''
         if self.fp16==True:
             self.scaler=torch.cuda.amp.GradScaler()
         else:
@@ -366,9 +366,9 @@ class ExpressTrain:
 
             self.epoch=epoch
 
-            self.on_epoch_start()
+            self.on_epoch_begin()
                     # epoch, data_loader, train, inference_on_holdout
-            self.on_train_epoch_start()
+            self.on_train_epoch_begin()
             loss_epoch, metric_epoch, _, _ = self.on_one_train_epoch(
                                                     epoch=epoch,
                                                     data_loader=self.train_loader,
@@ -378,7 +378,7 @@ class ExpressTrain:
             self.on_train_epoch_end()
 
             if self.valid_loader is not None:
-                self.on_valid_epoch_start()
+                self.on_valid_epoch_begin()
                 loss_epoch, metric_epoch, _, _ = self.on_one_valid_epoch(
                                                         epoch=epoch,
                                                         data_loader=self.valid_loader,
@@ -412,7 +412,7 @@ class ExpressTrain:
             self.test_loss_list=[]
             self.test_metric_list=[]
 
-            self.on_test_start()
+            self.on_test_begin()
             loss_epoch, metric_epoch, self.pred_test_list, \
                 self.target_test_list=self.on_one_test_epoch(
                                                     epoch=epoch,
@@ -424,31 +424,31 @@ class ExpressTrain:
 
             print(f"{self.metric_used.__name__}_test: {self.test_metric_list[-1]:.2f}")
 
-    def on_batch_start(self):
+    def on_batch_begin(self):
         pass
 
     def on_batch_end(self):
         pass
 
-    def on_epoch_start(self):
+    def on_epoch_begin(self):
         pass
 
     def on_epoch_end(self):
         pass
 
-    def on_train_epoch_start(self):
+    def on_train_epoch_begin(self):
         pass
 
     def on_train_epoch_end(self):
         pass
 
-    def on_valid_epoch_start(self):
+    def on_valid_epoch_begin(self):
         pass
 
     def on_valid_epoch_end(self):
         pass
 
-    def on_test_start(self):
+    def on_test_begin(self):
         pass
 
     def on_test_end(self):

@@ -21,7 +21,7 @@ class CustomExpressTrain(et.ExpressTrain):
         super(CustomExpressTrain, self).__init__()
         self.initialize_all(kwargs)
 
-    def on_train_epoch_start(self):
+    def on_train_epoch_begin(self):
             print(f"Message before epoch {self.epoch+1} - Today is a great day :)")
 
     def on_train_epoch_end(self):
@@ -58,15 +58,15 @@ Open the Fashion MNIST example in Colab!
 Customize your model using any of the following hooks (more to come!):
 
 ```Python3
-on_batch_start(self)        
+on_batch_begin(self)        
 on_batch_end(self)      
-on_epoch_start(self)
+on_epoch_begin(self)
 on_epoch_end(self)
-on_train_epoch_start(self)        
+on_train_epoch_begin(self)        
 on_train_epoch_end(self)        
-on_valid_epoch_start(self)        
+on_valid_epoch_begin(self)        
 on_valid_epoch_end(self)        
-on_test_start(self)       
+on_test_begin(self)       
 on_test_end(self)    
 ```
 
