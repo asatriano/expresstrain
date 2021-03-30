@@ -20,27 +20,34 @@ class CustomExpressTrain(et.ExpressTrain):
         self.initialize_all(kwargs)
 
     def on_train_epoch_start(self):
-        print(f"Pre-train message: You're doing great: epoch {self.epoch}")
+            print(f"Message before epoch {self.epoch+1} - Today is a great day :)")
 
-trainer=CustomExpressTrain(train_loader=train_loader, valid_loader=valid_loader, test_loader=test_loader,
-                        model=model, num_classes=num_classes,  
-                        learning_rate=learning_rate, optimizer=optimizer, metric_used=metric_used, 
-                        bce_use=bce_use, loss_fn=None,
-                        class_weights=class_weights,
-                        scheduler=scheduler, lr_adjuster_on_val=lr_adjuster, lr_div_factor=lr_div_factor, 
-                        survival=survival, one_cycle_epochs=one_cycle_epochs, 
-                        metric_from_whole=metric_from_whole, 
-                        backward_every=backward_every, fp16=fp16, device=device, 
-                        save_every=save_every,
-                        path_performance=path_performance,
-                        path_performance_and_model=path_performance_and_model)
+    def on_train_epoch_end(self):
+        self.scheduler_every_epoch.step()
+
+trainer_kwargs={'train_loader': train_loader,
+                'valid_loader': valid_loader,
+                'model': model,
+                'num_classes': 10,
+                'device': device,
+                'learning_rate': learning_rate,
+                'optimizer': optimizer,
+                'scheduler_every_epoch': scheduler_every_epoch,
+                'metric_used': accuracy,
+                'path_performance': path_performance,
+                'path_performance_and_model': path_perf_model,
+                'backward_every': backward_every}
+if use_fp16==True:
+    print("Using Automatic Mixed Precision")
+    trainer_kwargs.update({'fp16': use_fp16})
+
+trainer=CustomExpressTrain(**trainer_kwargs)
 
 trainer.fit(epochs=epochs)
 ```
 
 
-
-That's it :)
+That's it! 🚂
 
 Open the Fashion MNIST example in Colab!
 
