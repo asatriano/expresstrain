@@ -220,7 +220,7 @@ class ExpressTrain:
 
     def set_enumerable(self, data_loader):
         if self.use_progbar == True:
-            return tqdm(data_loader, total=len(data_loader), position=0, leave=True)
+            return tqdm(data_loader, total=len(data_loader), position=0)
         else:
             return data_loader
     
