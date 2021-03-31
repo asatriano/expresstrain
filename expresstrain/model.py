@@ -233,6 +233,8 @@ class ExpressTrain:
         Output: loss_epoch, metric_epoch, pred_list[1:], target_list[1:]
         Hooks available:
         on_epoch_begin, on_epoch_end,'''
+
+        enumerable=self.set_enumerable(data_loader)
         loss_list=[]
         metric_list=[]
         shape_log_list=[1,1] if self.bce_use==True else [1]
