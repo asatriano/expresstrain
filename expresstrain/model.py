@@ -408,7 +408,7 @@ class ExpressTrain:
                 if (self.lr_adjuster_on_val is not None) and (self.valid_loader is not None):
                     self.lr_adjust_on_val()
             
-            print(f"Epoch {epoch+1}/{epochs}, {self.metric_used.__name__}_train: {self.train_metric_list[-1]:.2f}")
+            print(f"\nEpoch {epoch+1}/{epochs}, {self.metric_used.__name__}_train: {self.train_metric_list[-1]:.2f}")
             if self.valid_loader is not None:
                 print(f"Epoch {epoch+1}/{epochs}, {self.metric_used.__name__}_valid: {self.val_metric_list[-1]:.2f}")
             
@@ -440,7 +440,7 @@ class ExpressTrain:
             self.test_metric_list.append(metric_epoch)
             self.on_test_end()
 
-            print(f"Inference on holdout: {self.metric_used.__name__}_test: {self.test_metric_list[-1]:.2f}")
+            print(f"\nInference on holdout: {self.metric_used.__name__}_test: {self.test_metric_list[-1]:.2f}")
 
     def on_batch_begin(self):
         pass
