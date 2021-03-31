@@ -14,7 +14,8 @@ from torch.optim.lr_scheduler import StepLR
 import os
 
 # Clone ExpressTrain
-os.system("git clone https://github.com/asatriano/expresstrain/tree/development")
+os.system("rm -rf ./expresstrain")
+os.system("git clone https://github.com/asatriano/expresstrain")
 # Import ExpressTrain :)
 import expresstrain as et
 
@@ -47,18 +48,8 @@ class Net(nn.Module):
     # custom loss function in ExpressTrainer)
 
 # %%
-# Set up some hyperparameters:
-RANDOM_SEED=42
-BATCH_SIZE=64
-BATCH_SIZE_MULTIPLIER=2
-NUM_WORKERS=0
-LEARNING_RATE=1.0
-EPOCHS=32
-PATH_PERFORMANCE='performance'
-PATH_PERFORMANCE_AND_MODEL='performance_and_model'
-
 def main():
-    # Trainign hyperparameters
+    # Training hyperparameters
     parser=argparse.ArgumentParser(description='PyTorch FashionMNIST Example')
     parser.add_argument('--random-seed', type=int, default=42, metavar='RS',
                         help='input random seed integer (default: 42)')
@@ -86,6 +77,8 @@ def main():
 # %%
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device used: {device}")
+
+    torch.manual_seed(args.random_seed)
      
     # Define your transforms:
     transform=transforms.Compose([
@@ -129,7 +122,7 @@ def main():
             super(CustomExpressTrain, self).__init__()
             self.initialize_all(kwargs)
 
-        def on_train_epoch_start(self):
+        def on_train_epoch_begin(self):
             print(f"Message before epoch {self.epoch+1} - Today is a great day :)")
     
     # Instance your Custom Express Train trainer

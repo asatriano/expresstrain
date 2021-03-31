@@ -14,6 +14,7 @@ from torch.optim.lr_scheduler import StepLR
 import os
 
 # Clone ExpressTrain
+os.system("rm -rf ./expresstrain")
 os.system("git clone https://github.com/asatriano/expresstrain")
 # Import ExpressTrain :)
 import expresstrain as et
@@ -47,19 +48,9 @@ class Net(nn.Module):
     # custom loss function in ExpressTrainer)
 
 # %%
-# Set up some hyperparameters:
-RANDOM_SEED=42
-BATCH_SIZE=64
-BATCH_SIZE_MULTIPLIER=2
-NUM_WORKERS=0
-LEARNING_RATE=1.0
-EPOCHS=32
-PATH_PERFORMANCE='performance'
-PATH_PERFORMANCE_AND_MODEL='performance_and_model'
-
 def main():
-    # Trainign hyperparameters
-    parser=argparse.ArgumentParser(description='PyTorch MNIST Example')
+    # Training hyperparameters
+    parser=argparse.ArgumentParser(description='PyTorch FashionMNIST Example')
     parser.add_argument('--random-seed', type=int, default=42, metavar='RS',
                         help='input random seed integer (default: 42)')
     parser.add_argument('--batch-size', type=int, default=32, metavar='BS',
@@ -70,11 +61,7 @@ def main():
                         help='input number of workers for dataloaders (default: 0)')
     parser.add_argument('--learning-rate', type=float, default=1e-2, metavar='LR',
                         help='input training learnign rate (default: 3e-4)')
-    parser.add_argument('--step-size-lr-scheduler', type=int, default=2, metavar='SLRS',
-                        help='Learning rate step gamma (default: 2)')
-    parser.add_argument('--gamma', type=float, default=1e-3, metavar='M',
-                        help='Learning rate step gamma (default: 0.7)')
-    parser.add_argument('--epochs', type=int, default=10, metavar='E',
+    parser.add_argument('--epochs', type=int, default=30, metavar='E',
                         help='input training epochs (default=10)')
     parser.add_argument('--path-performance', type=str, default=None, metavar='PP',
                         help='input saving path for loss and metrics (default: None)')
@@ -82,12 +69,16 @@ def main():
                         help='input saving path for loss, metric, and model params')
     parser.add_argument('--use-fp16', type=bool, default=False, metavar='FP16',
                         help='input whether to use Automatic Mixed Precision (default: True)')
+    parser.add_argument('--backward-every', type=int, default=1, metavar='N',
+                        help='input how many batches between backward passes (default: 1)')
 
     args=parser.parse_args()
 
 # %%
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device used: {device}")
+
+    torch.manual_seed(args.random_seed)
      
     # Define your transforms:
     transform=transforms.Compose([
@@ -96,15 +87,16 @@ def main():
         ])
 
     # Import your datasets
-    dataset1 = datasets.MNIST('./data', train=True, download=True,
+    dataset1 = datasets.FashionMNIST('./data', train=True, download=True,
                         transform=transform)
-    dataset2 = datasets.MNIST('./data', train=False,
+    dataset2 = datasets.FashionMNIST('./data', train=False,
                         transform=transform)
 
     # Define Dataloaders:
-    train_kwargs = {'batch_size': args.batch_size,
+    assert(args.batch_size>args.backward_every)
+    train_kwargs = {'batch_size': args.batch_size//args.backward_every,
                     'shuffle': True}
-    valid_kwargs = {'batch_size': args.batch_size*args.batch_size_multiplier,
+    valid_kwargs = {'batch_size': args.batch_size*args.batch_size_multiplier//args.backward_every,
                     'shuffle': False}
     workers_kwargs = {'num_workers': args.num_workers_dataloader}
 
@@ -116,11 +108,6 @@ def main():
     # Instance your favourite model and optimizer
     model = Net().to(device)
     optimizer = optim.AdamW(model.parameters(), lr=args.learning_rate)
-
-    #  Instance your favourite scheduler
-    scheduler_kwargs={'step_size': args.step_size_lr_scheduler,
-                    'gamma': args.gamma}
-    scheduler_every_epoch = torch.optim.lr_scheduler.StepLR(optimizer, **scheduler_kwargs)
 
     # Define your favourite metric
     def accuracy(preds, targets):
@@ -136,11 +123,8 @@ def main():
             super(CustomExpressTrain, self).__init__()
             self.initialize_all(kwargs)
 
-        def on_train_epoch_start(self):
+        def on_train_epoch_begin(self):
             print(f"Message before epoch {self.epoch+1} - Today is a great day :)")
-        
-        def on_train_epoch_end(self):
-            self.scheduler_every_epoch.step()
     
     # Instance your Custom Express Train trainer
     trainer_kwargs={'train_loader': train_loader,
@@ -150,10 +134,10 @@ def main():
                     'device': device,
                     'learning_rate': args.learning_rate,
                     'optimizer': optimizer,
-                    'scheduler_every_epoch': scheduler_every_epoch,
                     'metric_used': metric_used,
                     'path_performance': args.path_performance,
-                    'path_performance_and_model': args.path_perf_model}
+                    'path_performance_and_model': args.path_perf_model,
+                    'backward_every': args.backward_every}
     if args.use_fp16==True:
         print("Using Automatic Mixed Precision")
         trainer_kwargs.update({'fp16': args.use_fp16})
