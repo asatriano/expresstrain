@@ -440,7 +440,7 @@ class ExpressTrain:
             self.test_metric_list.append(metric_epoch)
             self.on_test_end()
 
-            print(f"Inference on holdout: {self.metric_used.__name__}_test: {self.test_metric_list[-1]:.2f}")
+            print(f"\nInference on holdout: {self.metric_used.__name__}_test: {self.test_metric_list[-1]:.2f}")
 
     def on_batch_begin(self):
         pass
