@@ -69,8 +69,6 @@ def main():
                         help='input saving path for loss, metric, and model params')
     parser.add_argument('--use-fp16', action='store_true', default=False,
                         help='input whether to use Automatic Mixed Precision (default: True)')
-    parser.add_argument('--use-progbar', action='store_true', default=False,
-                        help='input whether to use Progress Bar')
 
     args=parser.parse_args()
 
@@ -134,7 +132,6 @@ def main():
                     'learning_rate': args.learning_rate,
                     'optimizer': optimizer,
                     'metric_used': metric_used,
-                    'use_progbar': args.use_progbar,
                     'path_performance': args.path_performance,
                     'path_performance_and_model': args.path_perf_model}
     if args.use_fp16==True:
