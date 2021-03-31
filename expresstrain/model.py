@@ -223,7 +223,7 @@ class ExpressTrain:
         if self.use_progbar == True:
             return tqdm(data_loader, total=len(data_loader))
         else:
-            return enumerate(data_loader)
+            return data_loader
     
     def progbar_close(self, enumerable):
         if self.use_progbar == True:
