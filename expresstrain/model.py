@@ -219,6 +219,7 @@ class ExpressTrain:
         return pred_for_metric, target_for_metric
 
     def set_enumerable(self, data_loader):
+        print(f"self.use_progbar: {self.use_progbar}")
         if self.use_progbar == True:
             return tqdm(data_loader, total=len(data_loader))
         else:
