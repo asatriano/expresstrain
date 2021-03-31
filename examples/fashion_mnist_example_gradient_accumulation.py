@@ -124,7 +124,7 @@ def main():
             self.initialize_all(kwargs)
 
         def on_train_epoch_begin(self):
-            print(f"Message before epoch {self.epoch+1} - Today is a great day :)")
+            print(f"\nMessage before epoch {self.epoch+1} - Today is a great day :)")
     
     # Instance your Custom Express Train trainer
     trainer_kwargs={'train_loader': train_loader,
