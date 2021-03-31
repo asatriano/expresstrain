@@ -116,7 +116,7 @@ class ExpressTrain:
         self.save_every=5 # saing loss, metric and model happens every specified epochs
         self.path_performance=None # path where loss and metrics are saved
         self.path_performance_and_model=None # path where loss, metrics, and model params are saved
-        self.use_progbar=False # input True to use progress bar
+        self.use_progbar=True # input True to use progress bar
         for key in kwargs: #all other parameyters are converted into attributes
             setattr(self, key, kwargs[key])
 
