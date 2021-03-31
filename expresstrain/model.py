@@ -8,6 +8,8 @@ import torch.optim as optim
 import pandas as pd
 import numpy as np
 
+from tqdm import tqdm
+
 from pdb import set_trace
 
 RANDOM_SEED=42
@@ -114,6 +116,7 @@ class ExpressTrain:
         self.save_every=5 # saing loss, metric and model happens every specified epochs
         self.path_performance=None # path where loss and metrics are saved
         self.path_performance_and_model=None # path where loss, metrics, and model params are saved
+        self.use_progbar=False # input True to use progress bar
         for key in kwargs: #all other parameyters are converted into attributes
             setattr(self, key, kwargs[key])
 
@@ -215,11 +218,22 @@ class ExpressTrain:
                 pred_for_metric=self.compute_pred_from_output(output)
         return pred_for_metric, target_for_metric
 
+    def set_enumerable(self, data_loader):
+        if self.use_progbar == True:
+            return tqdm(data_loader, total=len(data_loader))
+        else:
+            return data_loader
+    
+    def progbar_close(self, enumerable):
+        if self.use_progbar == True:
+            enumerable.close()
+    
     def on_one_epoch(self, epoch, data_loader, train, inference_on_holdout):
         '''Input: epoch, data_loader, train status, inference_on_holdout status
         Output: loss_epoch, metric_epoch, pred_list[1:], target_list[1:]
         Hooks available:
         on_epoch_start, on_epoch_end,'''
+        enumerable=set_enumerable(data_loader)
         loss_list=[]
         metric_list=[]
         shape_log_list=[1,1] if self.bce_use==True else [1]
@@ -241,7 +255,7 @@ class ExpressTrain:
                                                     verbose=False
                                                     )
         self.batches_total=len(data_loader)
-        for batch_idx, (data, target) in enumerate(data_loader):
+        for batch_idx, (data, target) in enumerate(enumerable):
             self.batch=batch_idx
             self.on_batch_start()
             data, target=self.prepare_data_label_for_forward(data=data,
@@ -265,6 +279,8 @@ class ExpressTrain:
             if self.metric_from_whole==True:
                 pred_list=torch.cat((pred_list, pred.cpu()), dim=0)
                 target_list=torch.cat((target_list, target_metric.cpu()), dim=0)
+
+            self.progbar_close(enumerable)
             self.on_batch_end()
         if self.metric_from_whole==True:
             metric_epoch=100*self.metric_used(pred_list[1:], target_list[1:])

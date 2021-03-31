@@ -14,7 +14,7 @@ from torch.optim.lr_scheduler import StepLR
 import os
 
 # Clone ExpressTrain
-os.system("git clone https://github.com/asatriano/expresstrain")
+os.system("git clone https://github.com/asatriano/expresstrain/tree/development")
 # Import ExpressTrain :)
 import expresstrain as et
 
@@ -78,6 +78,8 @@ def main():
                         help='input saving path for loss, metric, and model params')
     parser.add_argument('--use-fp16', type=bool, default=False, metavar='FP16',
                         help='input whether to use Automatic Mixed Precision (default: True)')
+    parser.add_argument('--use-progbar', type=bool, default=False, metavar='PB',
+                        help='input whether to use Progress Bar')
 
     args=parser.parse_args()
 
@@ -139,6 +141,7 @@ def main():
                     'learning_rate': args.learning_rate,
                     'optimizer': optimizer,
                     'metric_used': metric_used,
+                    'use_progbar': args.use_progbar,
                     'path_performance': args.path_performance,
                     'path_performance_and_model': args.path_perf_model}
     if args.use_fp16==True:
