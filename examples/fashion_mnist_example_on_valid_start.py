@@ -15,7 +15,7 @@ import os
 
 # Clone ExpressTrain
 os.system("rm -rf ./expresstrain")
-os.system("git clone --branch development https://github.com/asatriano/expresstrain/")
+os.system("git clone https://github.com/asatriano/expresstrain/")
 # Import ExpressTrain :)
 import expresstrain as et
 
@@ -67,9 +67,9 @@ def main():
                         help='input saving path for loss and metrics (default: None)')
     parser.add_argument('--path-perf-model', type=str, default=None, metavar='PPM',
                         help='input saving path for loss, metric, and model params')
-    parser.add_argument('--use-fp16', type=bool, default=False, metavar='FP16',
+    parser.add_argument('--use-fp16', action='store_true', default=False,
                         help='input whether to use Automatic Mixed Precision (default: True)')
-    parser.add_argument('--use-progbar', type=bool, default=False, metavar='PB',
+    parser.add_argument('--use-progbar', action='store_true', default=False,
                         help='input whether to use Progress Bar')
 
     args=parser.parse_args()

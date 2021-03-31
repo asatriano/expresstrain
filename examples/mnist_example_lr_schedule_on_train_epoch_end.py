@@ -71,7 +71,7 @@ def main():
                         help='input saving path for loss and metrics (default: None)')
     parser.add_argument('--path-perf-model', type=str, default=None, metavar='PPM',
                         help='input saving path for loss, metric, and model params')
-    parser.add_argument('--use-fp16', type=bool, default=False, metavar='FP16',
+    parser.add_argument('--use-fp16', action='store_true', default=False,
                         help='input whether to use Automatic Mixed Precision (default: True)')
 
     args=parser.parse_args()
