@@ -222,11 +222,12 @@ class ExpressTrain:
         if self.use_progbar == True:
             return tqdm(data_loader, total=len(data_loader))
         else:
-            return data_loader
+            return enumerate(data_loader)
     
     def progbar_close(self, enumerable):
         if self.use_progbar == True:
             enumerable.close()
+
     
     def on_one_epoch(self, epoch, data_loader, train, inference_on_holdout):
         '''Input: epoch, data_loader, train status, inference_on_holdout status
@@ -281,8 +282,8 @@ class ExpressTrain:
                 pred_list=torch.cat((pred_list, pred.cpu()), dim=0)
                 target_list=torch.cat((target_list, target_metric.cpu()), dim=0)
 
-            self.progbar_close(enumerable)
             self.on_batch_end()
+        self.progbar_close(enumerable)
         if self.metric_from_whole==True:
             metric_epoch=100*self.metric_used(pred_list[1:], target_list[1:])
         else:
