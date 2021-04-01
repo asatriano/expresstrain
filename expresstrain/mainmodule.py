@@ -117,6 +117,9 @@ class ExpressTrain:
         self.path_performance=None # path where loss and metrics are saved
         self.path_performance_and_model=None # path where loss, metrics, and model params are saved
         self.use_progbar=True # input True to use progress bar
+
+        self.phase_str=["train", "valid", "test"]
+
         for key in kwargs: #all other parameyters are converted into attributes
             setattr(self, key, kwargs[key])
 
@@ -442,15 +445,19 @@ class ExpressTrain:
 
             self.print_progress(inference_on_holdout=True)
 
+    def print_progress_message(self, metric_used, metric_list, phase):
+        print(f"Epoch {self.epoch+1}/{self.epochs}, {metric_used.__name__}_{phase}: {metric_list[-1]:.2f}")
+
     def print_progress(self, inference_on_holdout=False):
+        print("\n")
         if inference_on_holdout==False:
-            print(f"\nEpoch {self.epoch+1}/{self.epochs}, {self.metric_used.__name__}_train: {self.train_metric_list[-1]:.2f}")
+            self.print_progress_message(metric_used=self.metric_used, metric_list=self.train_metric_list, phase=self.phase_str[0])
             if self.valid_loader is not None:
-                print(f"Epoch {self.epoch+1}/{self.epochs}, {self.metric_used.__name__}_valid: {self.val_metric_list[-1]:.2f}")
+                self.print_progress_message(metric_used=self.metric_used, metric_list=self.val_metric_list, phase=self.phase_str[1])
         else:
             if self.test_loader is not None:
-                print(f"Epoch {self.epoch+1}/{self.epochs}, {self.metric_used.__name__}_valid: {self.test_metric_list[-1]:.2f}")
-    
+                self.print_progress_message(metric_used=self.metric_used, metric_list=self.test_metric_list, phase=self.phase_str[2])
+
     def on_batch_begin(self):
         pass
 
