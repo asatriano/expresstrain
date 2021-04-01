@@ -117,6 +117,7 @@ class ExpressTrain:
         self.path_performance=None # path where loss and metrics are saved
         self.path_performance_and_model=None # path where loss, metrics, and model params are saved
         self.use_progbar=True # input True to use progress bar
+        self.try_one_batch=False # runs through a single batch
 
         self.phase_str=["train", "valid", "test"]
 
@@ -286,6 +287,7 @@ class ExpressTrain:
                 target_list=torch.cat((target_list, target_metric.cpu()), dim=0)
 
             self.on_batch_end()
+            if self.try_one_batch==True: break
         self.progbar_close(enumerable)
         if self.metric_from_whole==True:
             metric_epoch=100*self.metric_used(pred_list[1:], target_list[1:])
@@ -425,7 +427,8 @@ class ExpressTrain:
                                     self.val_metric_list)
             
             self.on_epoch_end()
-
+            if self.try_one_batch==True: break
+            
 
         if self.test_loader is not None:
             self.test_loss_list=[]
@@ -433,7 +436,7 @@ class ExpressTrain:
             
             self.phase_current=self.phase_str[2]
             self.on_one_test_epoch(epoch=epoch, data_loader=self.test_loader)
-
+   
     def print_progress_on_epoch(self, metric_epoch):
         print(f"\nEpoch {self.epoch+1}/{self.epochs}, {self.metric_used.__name__}_{self.phase_current}: {metric_epoch:.2f}")
 

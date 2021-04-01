@@ -105,5 +105,6 @@ self.path_performance=None # path where loss and metrics are saved
 self.path_performance_and_model=None # path where loss, metrics, and model params are saved
 
 self.use_progbar=True # input True to use progress bar
+self.try_one_batch=False # runs through a single batch
 ```
 

@@ -151,7 +151,8 @@ def main():
                     'scheduler_every_epoch': scheduler_every_epoch,
                     'metric_used': metric_used,
                     'path_performance': args.path_performance,
-                    'path_performance_and_model': args.path_perf_model}
+                    'path_performance_and_model': args.path_perf_model,
+                    'try_one_batch': False}
     if args.use_fp16==True:
         print("Using Automatic Mixed Precision")
         trainer_kwargs.update({'fp16': args.use_fp16})
