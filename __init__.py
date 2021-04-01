@@ -1,1 +1,1 @@
-from .expresstrain.model import ExpressTrain
+from .expresstrain.mainmodule import ExpressTrain

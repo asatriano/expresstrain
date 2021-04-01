@@ -15,7 +15,7 @@ import os
 
 # Clone ExpressTrain
 os.system("rm -rf ./expresstrain")
-os.system("git clone https://github.com/asatriano/expresstrain/")
+os.system("git clone --branch development https://github.com/asatriano/expresstrain/")
 # Import ExpressTrain :)
 import expresstrain as et
 
