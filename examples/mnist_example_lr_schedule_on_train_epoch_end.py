@@ -135,10 +135,6 @@ def main():
         def on_train_epoch_end(self):
             self.scheduler_every_epoch.step()
         
-        def print_progress_message(self, metric_used, metric_list, phase):
-            if phase == "train":
-                print(f"Sunny day today, eh?")
-            print(f"Epoch {self.epoch+1}/{self.epochs}, {metric_used.__name__}_{phase}: {metric_list[-1]:.2f}")
     
     # Instance your Custom Express Train trainer
     trainer_kwargs={'train_loader': train_loader,
