@@ -436,17 +436,16 @@ class ExpressTrain:
             self.on_one_test_epoch(epoch=epoch, data_loader=self.test_loader)
 
     def print_progress_on_epoch(self, metric_epoch):
-        print(f"Epoch {self.epoch+1}/{self.epochs}, {self.metric_used.__name__}_{self.phase_current}: {metric_epoch:.2f}")
+        print(f"\nEpoch {self.epoch+1}/{self.epochs}, {self.metric_used.__name__}_{self.phase_current}: {metric_epoch:.2f}\n")
 
     def print_on_train_epoch(self):
-        print("\n")
         self.print_progress_on_epoch(self.train_metric_list[-1])
     
     def print_on_valid_epoch(self):
+
         self.print_progress_on_epoch(self.val_metric_list[-1])
     
     def print_on_test_epoch(self):
-        print("\n")
         self.print_progress_on_epoch(self.test_metric_list)[-1]
 
     def on_batch_begin(self):
