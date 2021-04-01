@@ -129,11 +129,17 @@ def main():
             super(CustomExpressTrain, self).__init__()
             self.initialize_all(kwargs)
 
+        #  customize any portion of your loop:
         def on_train_epoch_begin(self):
             print(f"\nMessage before epoch {self.epoch+1} - Today is a great day :)")
         
         def on_train_epoch_end(self):
             self.scheduler_every_epoch.step()
+
+        def print_progress_message(self, metric_used, metric_list, phase):
+            if phase=="train":
+                print("A great day to train!")
+            print(f"Epoch {self.epoch+1}/{self.epochs}, {metric_used.__name__}_{phase}: {metric_list[-1]:.2f}")
         
     
     # Instance your Custom Express Train trainer
