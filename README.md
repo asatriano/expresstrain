@@ -67,7 +67,14 @@ on_train_epoch_end(self)
 on_valid_epoch_begin(self)        
 on_valid_epoch_end(self)        
 on_test_begin(self)       
-on_test_end(self)    
+on_test_end(self)
+print_progress_on_epoch(self, metric_epoch)
+print_on_train_epoch_end(self)   
+print_on_valid_epoch_end(self)
+print_on_test_epoch_end(self)
+compute_output_and_loss(self, data, target)
+compute_pred_from_output(self, output)
+lr_adjust_on_val(self)
 ```
 
 or changing any of the default attributes when you instance your custom trainer:
