@@ -97,9 +97,8 @@ self.one_cycle_epochs=None # how many epochs each one-cycle trainign cycle shoul
 
 self.metric_from_whole=True # should metric be computed by single batch of whole epoch
 
-self.backward_every=1 # backward is performed every specified number of epochs (for gradient accumulation)
-self.fp16=False # half precision (nvidia amp) training: saves memory (for Automatic Mixed Precision)
-
+self.backward_every=1 # backward pass every N epochs (for gradient accumulation)
+self.fp16=False # save memory at training (for Automatic Mixed Precision)
 self.save_every=5 # saing loss, metric and model happens every specified epochs
 
 self.path_performance=None # path where loss and metrics are saved
