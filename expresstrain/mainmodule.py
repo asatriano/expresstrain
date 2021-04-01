@@ -334,7 +334,7 @@ class ExpressTrain:
                                                     )
         self.train_loss_list.append(loss_epoch)
         self.train_metric_list.append(metric_epoch)
-        self.print_on_train_epoch()
+        self.print_on_train_epoch_end()
         self.on_train_epoch_end()
 
     def on_one_valid_epoch(self, epoch, data_loader):
@@ -350,7 +350,7 @@ class ExpressTrain:
                                                     )
         self.val_loss_list.append(loss_epoch)
         self.val_metric_list.append(metric_epoch)
-        self.print_on_valid_epoch()
+        self.print_on_valid_epoch_end()
         self.on_valid_epoch_end()
 
     def on_one_test_epoch(self, epoch, data_loader):
@@ -367,7 +367,7 @@ class ExpressTrain:
         self.test_loss_list.append(loss_epoch)
         self.test_metric_list.append(metric_epoch)
         self.on_test_end()
-        self.print_on_test_epoch()
+        self.print_on_test_epoch_end()
         return loss_epoch, metric_epoch, pred_list, target_list
 
     def lr_adjust_on_val(self):
@@ -436,16 +436,15 @@ class ExpressTrain:
             self.on_one_test_epoch(epoch=epoch, data_loader=self.test_loader)
 
     def print_progress_on_epoch(self, metric_epoch):
-        print(f"\nEpoch {self.epoch+1}/{self.epochs}, {self.metric_used.__name__}_{self.phase_current}: {metric_epoch:.2f}\n")
+        print(f"\nEpoch {self.epoch+1}/{self.epochs}, {self.metric_used.__name__}_{self.phase_current}: {metric_epoch:.2f}")
 
-    def print_on_train_epoch(self):
+    def print_on_train_epoch_end(self):
         self.print_progress_on_epoch(self.train_metric_list[-1])
     
-    def print_on_valid_epoch(self):
-
+    def print_on_valid_epoch_end(self):
         self.print_progress_on_epoch(self.val_metric_list[-1])
     
-    def print_on_test_epoch(self):
+    def print_on_test_epoch_end(self):
         self.print_progress_on_epoch(self.test_metric_list)[-1]
 
     def on_batch_begin(self):

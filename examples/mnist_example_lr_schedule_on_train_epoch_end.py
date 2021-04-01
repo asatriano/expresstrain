@@ -135,7 +135,7 @@ def main():
         def on_train_epoch_end(self):
             self.scheduler_every_epoch.step()
 
-        def print_on_train_epoch(self):
+        def print_on_train_epoch_end(self):
             print("\nA great day to train!")
             self.print_progress_on_epoch(self.train_metric_list[-1])
         
