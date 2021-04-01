@@ -326,12 +326,12 @@ class ExpressTrain:
         Output: loss, metric, predictions list, target list'''
         self.on_train_epoch_begin()
         loss_epoch, metric_epoch, \
-            pred_list, target_list = self.on_one_epoch(
-                                                    epoch=epoch,
-                                                    data_loader=data_loader,
-                                                    train=True,
-                                                    inference_on_holdout=False
-                                                    )
+            _, _ = self.on_one_epoch(
+                                    epoch=epoch,
+                                    data_loader=data_loader,
+                                    train=True,
+                                    inference_on_holdout=False
+                                    )
         self.train_loss_list.append(loss_epoch)
         self.train_metric_list.append(metric_epoch)
         self.print_on_train_epoch_end()
@@ -342,12 +342,12 @@ class ExpressTrain:
         Output: loss, metric, predictions list, target list'''
         self.on_valid_epoch_begin()
         loss_epoch, metric_epoch, \
-            pred_list, target_list = self.on_one_epoch(
-                                                    epoch=epoch,
-                                                    data_loader=data_loader,
-                                                    train=False,
-                                                    inference_on_holdout=False
-                                                    )
+            _, _ = self.on_one_epoch(
+                                    epoch=epoch,
+                                    data_loader=data_loader,
+                                    train=False,
+                                    inference_on_holdout=False
+                                    )
         self.val_loss_list.append(loss_epoch)
         self.val_metric_list.append(metric_epoch)
         self.print_on_valid_epoch_end()
@@ -358,7 +358,7 @@ class ExpressTrain:
         Output: loss, metric, predictions list, target list'''
         self.on_test_begin()
         loss_epoch, metric_epoch, \
-            pred_list, target_list = self.on_one_epoch(
+            self.pred_test_list, self.target_test_list = self.on_one_epoch(
                                                     epoch=epoch,
                                                     data_loader=data_loader,
                                                     train=False,
@@ -368,7 +368,6 @@ class ExpressTrain:
         self.test_metric_list.append(metric_epoch)
         self.on_test_end()
         self.print_on_test_epoch_end()
-        return loss_epoch, metric_epoch, pred_list, target_list
 
     def lr_adjust_on_val(self):
         self.lr_adjuster_on_val.step(self.val_metric_list[-1])
@@ -445,7 +444,7 @@ class ExpressTrain:
         self.print_progress_on_epoch(self.val_metric_list[-1])
     
     def print_on_test_epoch_end(self):
-        self.print_progress_on_epoch(self.test_metric_list)[-1]
+        self.print_progress_on_epoch(self.test_metric_list[-1])
 
     def on_batch_begin(self):
         pass
