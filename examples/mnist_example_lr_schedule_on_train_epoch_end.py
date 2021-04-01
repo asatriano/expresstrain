@@ -14,7 +14,6 @@ from torch.optim.lr_scheduler import StepLR
 import os
 
 # Clone ExpressTrain
-os.system("rm -rf ./expresstrain")
 os.system("git clone https://github.com/asatriano/expresstrain")
 # Import ExpressTrain :)
 import expresstrain as et
@@ -136,10 +135,9 @@ def main():
         def on_train_epoch_end(self):
             self.scheduler_every_epoch.step()
 
-        def print_progress_message(self, metric_used, metric_list, phase):
-            if phase=="train":
-                print("A great day to train!")
-            print(f"Epoch {self.epoch+1}/{self.epochs}, {metric_used.__name__}_{phase}: {metric_list[-1]:.2f}")
+        def print_on_train_epoch(self):
+            print("\nA great day to train!")
+            self.print_progress_on_epoch(self.train_metric_list[-1])
         
     
     # Instance your Custom Express Train trainer
