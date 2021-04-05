@@ -1,5 +1,5 @@
 __pycache__/
 examples/data/
-.vscode/settings.json
+.vscode/
 .DS_Store
-expresstrain/.vscode/settings.json
+expresstrain/.vscode/
