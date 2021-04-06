@@ -109,11 +109,11 @@ class ExpressTrain:
         self.lr_adjuster_on_val=None # pytorch scheduler depending on validation results
         self.lr_div_factor=None # if not None, this activates one_cycle traing and divides lr
         self.survival=False #if not False, if triggers survival-specific loss functions
-        self.one_cycle_epochs=None # how many epochs each one-cycle trainign cycle should last
+        self.one_cycle_epochs=None # how many epochs each one-cycle training cycle should last
         self.metric_from_whole=True # should metric be computed by single batch of whole epoch
         self.backward_every=1 # backward is performed every specified number of epochs
         self.fp16=False # half precision (nvidia amp) training: saves memory
-        self.save_every=5 # saing loss, metric and model happens every specified epochs
+        self.save_every=5 # saving loss, metric and model happens every specified epochs
         self.path_performance=None # path where loss and metrics are saved
         self.path_performance_and_model=None # path where loss, metrics, and model params are saved
         self.use_progbar=True # input True to use progress bar
