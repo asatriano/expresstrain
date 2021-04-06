@@ -120,8 +120,10 @@ class ExpressTrain:
         self.use_progbar=True # input True to use progress bar
         self.try_one_batch=False # runs through a single batch
         self.log_dir=None
+        self.log_suffix=''
 
-        self.logger=ExpressTensorBoard(log_dir=self.log_dir) # decides what logger to use
+        self.logger=ExpressTensorBoard(log_dir=self.log_dir,
+                                    filename_suffix=self.log_suffix) # decides what logger to use
 
         self.phase_str=["train", "valid", "test"]
 
