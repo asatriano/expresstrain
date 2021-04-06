@@ -32,7 +32,7 @@ class ExpressTrain:
         backward_every=1, fp16=False,
         save_every=None,
         path_performance=None,
-        path_performance_and_model=None
+        path_model=None
         
         Example subclassing:
 
@@ -57,7 +57,7 @@ class ExpressTrain:
                                 backward_every=backward_every, fp16=fp16, device=device, 
                                 save_every=save_every,
                                 path_performance=path_performance,
-                                path_performance_and_model=path_performance_and_model)
+                                path_model=path_model)
 
         trainer.fit(epochs=epochs)
 
@@ -88,7 +88,7 @@ class ExpressTrain:
         device (torch.device): device for analysis (default: torch.device('cpu'))
         save_every (int): progress is saved every save_every epochs (default: 5)
         path_performance (str): loss and metrics are saved in path_performance (default: None)
-        path_performance_and_model (str): loss, metrics, and model parameters are saved inpath_performance_and_model (default: None)
+        path_model (str): model parameters are saved in path_model (default: None)
 
         More:
         You can provide datasets as kwargs if you define methods to build dataloaders
@@ -115,7 +115,7 @@ class ExpressTrain:
         self.fp16=False # half precision (nvidia amp) training: saves memory
         self.save_every=5 # saing loss, metric and model happens every specified epochs
         self.path_performance=None # path where loss and metrics are saved
-        self.path_performance_and_model=None # path where loss, metrics, and model params are saved
+        self.path_model=None # path where loss, metrics, and model params are saved
         self.use_progbar=True # input True to use progress bar
         self.try_one_batch=False # runs through a single batch
 
@@ -297,20 +297,11 @@ class ExpressTrain:
         
         return loss_epoch, metric_epoch, pred_list[1:], target_list[1:]
 
-    def save_progress(self, epoch,
+    def save_model_params(self, epoch,
             train_loss_list, train_metric_list, val_loss_list, val_metric_list):
         '''No outputs: saves progress'''
-        if ((epoch+1) % self.save_every==0.) and ((self.path_performance is not None) or (self.path_performance_and_model is not None)):
-            if self.path_performance is not None:
-                torch.save(
-                    {
-                    'train_loss': train_loss_list,
-                    'train_metric': train_metric_list,
-                    'val_loss': val_loss_list,
-                    'val_metric': val_metric_list
-                    },
-                    self.path_performance)
-            if self.path_performance_and_model is not None:
+        if ((epoch+1) % self.save_every==0.) and (self.path_model is not None):
+            if self.path_model is not None:
                 torch.save(
                     {
                     'train_loss': train_loss_list,
@@ -321,7 +312,7 @@ class ExpressTrain:
                     'model_state_dict': self.model.state_dict(),
                     'optimizer_state_dict': self.optimizer.state_dict(),
                     },
-                    self.path_performance_and_model)
+                    self.path_model)
 
     def on_one_train_epoch(self, epoch, data_loader):
         '''Input: epoch, data_loader
@@ -420,7 +411,7 @@ class ExpressTrain:
                 # SAVING
                 # epoch,
             # train_loss_list, train_metric_list, val_loss_list, val_metric_list
-                self.save_progress(epoch,
+                self.save_model_params(epoch,
                                     self.train_loss_list,
                                     self.train_metric_list,
                                     self.val_loss_list,
