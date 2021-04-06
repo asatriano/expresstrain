@@ -8,7 +8,7 @@ class ExpressLogger(object):
         self.initialize_all(kwargs)
 
     def initialize_all(self, kwargs):
-        for key in kwargs: #all other parameyters are converted into attributes
+        for key in kwargs: #all other parameters are converted into attributes
             setattr(self, key, kwargs[key])
     
     def initialize_writer(self):
@@ -25,18 +25,22 @@ class ExpressLogger(object):
 
     def close(self):
         return NotImplemented
+    
+    def flush_and_close(self):
+        self.flush()
+        self.close()
 
-    def check_and_log(self, phase, epoch, var_name, var_value):
-        if isinstance(var_name, list):
+    def check_and_log(self, phase, epoch, var_fn, var_value):
+        if isinstance(var_fn, list):
             assert(isinstance(var_value, list))
-            assert(len(var_name)==len(var_value))
-            for var_idx, var in enumerate(var_name):
+            assert(len(var_fn)==len(var_value))
+            for var_idx, var in enumerate(var_fn):
                 self.log_one_var(phase, epoch,
-                    var, var_value[var_idx])
+                    var.__name__, var_value[var_idx])
         else:
             assert(isinstance(var_value, list)==False)
             self.log_one_var(phase, epoch,
-                var_name, var_value)
+                var_fn.__name__, var_value)
 
 # %%
 class ExpressTensorBoard(ExpressLogger):
@@ -48,14 +52,14 @@ class ExpressTensorBoard(ExpressLogger):
         self.writer=torch.utils.tensorboard.SummaryWriter(
             log_dir, comment, purge_step, max_queue, flush_secs, filename_suffix)
         
-    def log_one_var(self, phase, epoch, var_name, var_value)
+    def log_one_var(self, phase, epoch, var_name, var_value):
         self.writer.add_scalar(f"{var_name}/{phase}",
                                 var_value, epoch,
                                 )
 
-    def write_data(self, phase, epoch, loss_name=None, loss_value=None, metric_name=None, metric_value=None):
-        self.check_and_log(phase, epoch, loss_name, loss_value)
-        self.check_and_log(phase, epoch, metric_name, metric_value)
+    def write_data(self, phase, epoch, loss_fn=None, loss_value=None, metric_fn=None, metric_value=None):
+        self.check_and_log(phase, epoch, loss_fn, loss_value)
+        self.check_and_log(phase, epoch, metric_fn, metric_value)
 
     def flush(self):
         self.writer.flush

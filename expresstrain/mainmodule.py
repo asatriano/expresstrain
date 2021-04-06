@@ -12,6 +12,8 @@ from tqdm import tqdm
 
 from pdb import set_trace
 
+from .utils.logger import ExpressTensorBoard
+
 RANDOM_SEED=42
 np.random.seed(RANDOM_SEED)
 torch.manual_seed(RANDOM_SEED)
@@ -114,15 +116,18 @@ class ExpressTrain:
         self.backward_every=1 # backward is performed every specified number of epochs
         self.fp16=False # half precision (nvidia amp) training: saves memory
         self.save_every=5 # saving loss, metric and model happens every specified epochs
-        self.path_performance=None # path where loss and metrics are saved
         self.path_model=None # path where loss, metrics, and model params are saved
         self.use_progbar=True # input True to use progress bar
         self.try_one_batch=False # runs through a single batch
+        self.log_dir=None
+
+        self.logger=ExpressTensorBoard(log_dir=self.log_dir) # decides what logger to use
 
         self.phase_str=["train", "valid", "test"]
 
         for key in kwargs: #all other parameyters are converted into attributes
             setattr(self, key, kwargs[key])
+
 
     def compute_output_and_loss(self, data, target):
         '''Inputs: data, target
@@ -148,10 +153,12 @@ class ExpressTrain:
         Outputs: output, loss'''
         if self.survival==False:
             if self.bce_use==True:
-                self.loss_fn=torch.nn.BCEWithLogitsLoss()
+                self.loss_fn_used=torch.nn.BCEWithLogitsLoss
+                self.loss_fn=self.loss_fn_used()
             else:
                 if self.loss_fn is None:
-                    self.loss_fn=torch.nn.CrossEntropyLoss(weight=self.class_weights \
+                    self.loss_fn_used=torch.nn.CrossEntropyLoss
+                    self.loss_fn=self.loss_fn_used(weight=self.class_weights \
                                                     if self.class_weights is not None else None)
         else:
             print("Survival Loss Not implemented here yet")
@@ -294,6 +301,10 @@ class ExpressTrain:
         else:
             metric_epoch=100*sum(metric_list)/len(metric_list)
         loss_epoch=sum(loss_list)/len(loss_list)
+
+        self.logger.write_data(self.phase_current, self.epoch,
+                                self.loss_fn_used, loss_epoch,
+                                self.metric_used, metric_epoch)
         
         return loss_epoch, metric_epoch, pred_list[1:], target_list[1:]
 
@@ -428,6 +439,8 @@ class ExpressTrain:
             self.phase_current=self.phase_str[2]
             self.on_one_test_epoch(epoch=epoch, data_loader=self.test_loader)
    
+        self.logger.flush_and_close()
+
     def print_progress_on_epoch(self, metric_epoch):
         print(f"\nEpoch {self.epoch+1}/{self.epochs}, {self.metric_used.__name__}_{self.phase_current}: {metric_epoch:.2f}")
 
