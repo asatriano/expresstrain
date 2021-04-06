@@ -48,7 +48,7 @@ class ExpressTensorBoard(ExpressLogger):
         self.writer=torch.utils.tensorboard.SummaryWriter(
             log_dir, comment, purge_step, max_queue, flush_secs, filename_suffix)
         
-    def log_one_var(phase, epoch, var_name, var_value)
+    def log_one_var(self, phase, epoch, var_name, var_value)
         self.writer.add_scalar(f"{var_name}/{phase}",
                                 var_value, epoch,
                                 )
