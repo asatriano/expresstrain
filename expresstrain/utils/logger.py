@@ -2,6 +2,8 @@
 import torch
 from torch.utils.tensorboard import SummaryWriter
 
+from pdb import set_trace
+
 # %% Generic logger class
 class ExpressLogger(object):
     def __init__(self, **kwargs):
